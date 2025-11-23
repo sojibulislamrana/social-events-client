@@ -105,7 +105,7 @@ const Home = () => {
           {/* Right side: simple modern visual */}
           <div className="flex-1 w-full">
             <div className="relative max-w-md mx-auto">
-              <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20 blur-3xl absolute inset-0" />
+              <div className="aspect-square rounded-3xl bg-linear-to-br from-primary/20 via-secondary/10 to-accent/20 blur-3xl absolute inset-0" />
               <div className="relative grid grid-cols-2 gap-4">
                 <SectionCard
                   title="Clean-up Campaigns"
@@ -239,7 +239,7 @@ const Home = () => {
                       No image available
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
                     <span className="badge badge-sm badge-outline border-base-100 text-base-100">
                       {event.eventType}
