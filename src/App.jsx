@@ -17,6 +17,10 @@ import NotFound from "./pages/NotFound";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "react-hot-toast";
+import About from "./pages/About";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
+import Contact from "./pages/Contact";
 
 const App = () => {
   return (
@@ -27,12 +31,17 @@ const App = () => {
         {" "}
         {/* ✅ inner wrapper */}
         <BrowserRouter>
-          <Toaster position="top-right"/>
+          <Toaster position="top-right" />
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="upcoming-events" element={<UpcomingEvents />} />
               <Route path="event/:id" element={<EventDetails />} />
+
+              <Route path="about" element={<About />} />
+              <Route path="privacy" element={<PrivacyPolicy />} />
+              <Route path="terms" element={<Terms/>} />
+              <Route path="contact" element={<Contact />} />
 
               <Route
                 path="create-event"
