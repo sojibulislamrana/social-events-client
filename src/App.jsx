@@ -1,7 +1,6 @@
-// src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./providers/AuthProvider";
-import ThemeProvider from "./providers/ThemeProvider"; // ✅ make sure this import exists
+import ThemeProvider from "./providers/ThemeProvider";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -26,10 +25,8 @@ const App = () => {
   return (
     <ThemeProvider>
       {" "}
-      {/* ✅ outer wrapper */}
       <AuthProvider>
         {" "}
-        {/* ✅ inner wrapper */}
         <BrowserRouter>
           <Toaster position="top-right" />
           <Routes>
@@ -40,7 +37,7 @@ const App = () => {
 
               <Route path="about" element={<About />} />
               <Route path="privacy" element={<PrivacyPolicy />} />
-              <Route path="terms" element={<Terms/>} />
+              <Route path="terms" element={<Terms />} />
               <Route path="contact" element={<Contact />} />
 
               <Route
