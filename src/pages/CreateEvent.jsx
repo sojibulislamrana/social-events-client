@@ -127,7 +127,6 @@ const CreateEvent = () => {
             </div>
           </div>
 
-          {/* Thumbnail + Location */}
           <div className="grid gap-4 md:grid-cols-[2fr,1.5fr]">
             <div className="form-control">
               <label className="label">
@@ -163,7 +162,6 @@ const CreateEvent = () => {
             </div>
           </div>
 
-          {/* Date */}
           <div className="form-control max-w-xs">
             <label className="label">
               <span className="label-text font-medium">Event Date</span>
