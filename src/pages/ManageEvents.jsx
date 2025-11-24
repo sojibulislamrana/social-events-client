@@ -1,4 +1,3 @@
-// src/pages/ManageEvents.jsx
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import toast from "react-hot-toast";
