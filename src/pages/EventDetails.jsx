@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import toast from "react-hot-toast";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUser, FaUsers, FaShareAlt } from "react-icons/fa";
+import CountdownTimer from "../components/CountdownTimer";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -109,7 +110,7 @@ const EventDetails = () => {
         throw new Error(data.message || "Failed to join event.");
       }
 
-      toast.success("You have successfully joined this event!");
+      toast.success("You have successfully joined this event! 🎉");
     } catch (err) {
       console.error(err);
       toast.error(err.message || "Something went wrong.");
@@ -134,7 +135,10 @@ const EventDetails = () => {
   if (loading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
+        <div className="text-center space-y-4">
+          <Spinner size="lg" />
+          <p className="text-base-content/70">Loading event details...</p>
+        </div>
       </div>
     );
   }
@@ -302,16 +306,25 @@ const EventDetails = () => {
         </div>
 
         {/* Right Column - Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
           {/* Join Event Card */}
-          <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl border shadow-sm p-6 space-y-4 sticky top-20">
+          <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl border shadow-sm p-6 space-y-4">
             <h3 className="text-xl font-bold">Join This Event</h3>
+            
+            {/* Countdown Timer */}
+            {event.eventDate && (
+              <div className="bg-base-100 rounded-xl p-4 border border-primary/20">
+                <p className="text-sm font-semibold mb-2 text-base-content/70">Event starts in:</p>
+                <CountdownTimer eventDate={event.eventDate} />
+              </div>
+            )}
+            
             <p className="text-sm text-base-content/70">
               Be part of this community initiative and make a difference!
             </p>
             <button
               onClick={handleJoin}
-              className="btn btn-primary w-full"
+              className="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all"
               disabled={joinLoading}
             >
               {joinLoading ? "Joining..." : "Join Event"}
@@ -322,6 +335,34 @@ const EventDetails = () => {
             >
               Browse More Events
             </Link>
+          </div>
+
+          {/* Map Section */}
+          <div className="bg-base-100 rounded-2xl border shadow-sm p-6 space-y-3">
+            <h3 className="font-semibold flex items-center gap-2">
+              <FaMapMarkerAlt className="text-primary" />
+              Event Location
+            </h3>
+            <p className="text-sm text-base-content/70 mb-3">{event.location}</p>
+            <div className="w-full h-64 rounded-lg overflow-hidden border border-base-300">
+              <iframe
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6d-s6U4UZuKM16E&q=${encodeURIComponent(event.location)}`}
+              />
+            </div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-sm btn-outline w-full"
+            >
+              Open in Google Maps
+            </a>
           </div>
 
           {/* Event Rules/Important Info */}

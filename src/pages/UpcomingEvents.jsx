@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { FaSearch, FaFilter, FaSort } from "react-icons/fa";
+import { Link, useSearchParams } from "react-router-dom";
+import { FaSearch, FaFilter, FaSort, FaMapMarkerAlt, FaCalendarAlt, FaEye, FaTimes } from "react-icons/fa";
+import CountdownTimer from "../components/CountdownTimer";
+import Spinner from "../components/Spinner";
 
 const UpcomingEvents = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   
-  // Filter and search states
+  // Filter and search states - initialize from URL
   const [searchQuery, setSearchQuery] = useState("");
-  const [eventTypeFilter, setEventTypeFilter] = useState("");
+  const [eventTypeFilter, setEventTypeFilter] = useState(searchParams.get("type") || "");
   const [locationFilter, setLocationFilter] = useState("");
   const [sortBy, setSortBy] = useState("date-asc");
   
@@ -107,13 +110,16 @@ const UpcomingEvents = () => {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-base-200 rounded animate-pulse" />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="card-consistent bg-base-200 animate-pulse">
-              <div className="h-40 bg-base-300" />
-              <div className="p-4 space-y-2">
-                <div className="h-4 bg-base-300 rounded w-3/4" />
-                <div className="h-3 bg-base-300 rounded w-1/2" />
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="card-consistent bg-base-100 border-2 border-base-300 rounded-2xl overflow-hidden">
+              <div className="h-52 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer" />
+              <div className="p-5 space-y-3">
+                <div className="h-5 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded w-3/4" />
+                <div className="h-4 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded w-1/2" />
+                <div className="h-3 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded w-full" />
+                <div className="h-3 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded w-2/3" />
+                <div className="h-8 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded mt-4" />
               </div>
             </div>
           ))}
@@ -239,15 +245,21 @@ const UpcomingEvents = () => {
         {(searchQuery || eventTypeFilter || locationFilter) && (
           <button
             onClick={resetFilters}
-            className="btn btn-ghost btn-sm"
+            className="btn btn-ghost btn-sm gap-2"
           >
+            <FaTimes />
+            <FaTimes className="text-xs" />
             Clear Filters
           </button>
         )}
 
         {/* Results Count */}
-        <div className="text-sm text-base-content/70">
-          Showing {filteredEvents.length} of {events.length} events
+        <div className="text-sm text-base-content/70 flex items-center gap-2">
+          <FaCalendarAlt className="text-primary" />
+          <span>
+            Showing <span className="font-semibold text-primary">{filteredEvents.length}</span> of{" "}
+            <span className="font-semibold">{events.length}</span> events
+          </span>
         </div>
       </div>
 
@@ -271,48 +283,59 @@ const UpcomingEvents = () => {
             {currentEvents.map((event) => (
               <div
                 key={event._id}
-                className="card-consistent group overflow-hidden rounded-2xl border bg-base-100 shadow-sm hover:shadow-lg transition-shadow duration-200"
+                className="card-consistent group overflow-hidden rounded-2xl border-2 border-base-300 bg-base-100 shadow-md hover:shadow-2xl transition-all duration-300 hover:border-primary/50 flex flex-col"
               >
-                <div className="relative h-48 bg-base-200 overflow-hidden">
+                <div className="relative h-52 bg-base-200 overflow-hidden flex-shrink-0">
                   {event.thumbnail ? (
                     <img
                       src={event.thumbnail}
                       alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-sm text-base-content/60">
+                    <div className="w-full h-full flex items-center justify-center text-sm text-base-content/60 bg-gradient-to-br from-base-300 to-base-200">
                       No image
                     </div>
                   )}
-                  <div className="absolute top-3 right-3">
-                    <span className="badge badge-sm bg-base-100/90 text-base-content border-0">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
+                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-lg">
                       {event.eventType}
                     </span>
+                    <div className="badge badge-sm bg-base-100/90 text-base-content border-0 shadow-md">
+                      <FaCalendarAlt className="mr-1" />
+                      {event.eventDate
+                        ? new Date(event.eventDate).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })
+                        : ""}
+                    </div>
                   </div>
                 </div>
-                <div className="p-4 space-y-2 flex-1 flex flex-col">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs text-base-content/60">
-                      {event.eventDate
-                        ? new Date(event.eventDate).toLocaleDateString()
-                        : ""}
-                    </span>
-                  </div>
-                  <h2 className="font-semibold text-base line-clamp-2">
+                <div className="p-5 space-y-3 flex-1 flex flex-col min-h-[200px]">
+                  <h2 className="font-bold text-lg line-clamp-2 group-hover:text-primary transition-colors min-h-[3.5rem]">
                     {event.title}
                   </h2>
-                  <p className="text-sm text-base-content/70 line-clamp-2 flex items-center gap-1">
-                    <span>📍</span>
-                    {event.location}
+                  <p className="text-sm text-base-content/70 line-clamp-2 flex items-start gap-2 min-h-[2.5rem]">
+                    <FaMapMarkerAlt className="text-secondary mt-0.5 flex-shrink-0" />
+                    <span>{event.location}</span>
                   </p>
-                  <p className="text-xs text-base-content/60 line-clamp-2">
+                  <p className="text-xs text-base-content/60 line-clamp-2 flex-1">
                     {event.description}
                   </p>
-                  <div className="mt-auto pt-2">
+                  
+                  {/* Countdown Timer - Compact Single Line */}
+                  {event.eventDate && (
+                    <div className="py-2 border-t border-base-300 flex-shrink-0">
+                      <CountdownTimer eventDate={event.eventDate} compact />
+                    </div>
+                  )}
+                  
+                  <div className="mt-auto pt-2 flex-shrink-0">
                     <Link
                       to={`/event/${event._id}`}
-                      className="btn btn-sm btn-outline w-full"
+                      className="btn btn-primary btn-sm w-full shadow-md hover:shadow-lg transition-all"
                     >
                       View Details
                     </Link>

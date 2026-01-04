@@ -1,16 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SectionCard from "../components/SectionCard";
 import toast from "react-hot-toast";
 import { FaUsers, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaChartLine, FaHandsHelping } from "react-icons/fa";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [galleryEvents, setGalleryEvents] = useState([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
   const [galleryError, setGalleryError] = useState("");
   const [email, setEmail] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [stats, setStats] = useState({ totalEvents: 0, totalUsers: 0, totalJoined: 0 });
+
+  // Handle category click - redirect to explore events with filter
+  const handleCategoryClick = (eventType) => {
+    navigate(`/upcoming-events?type=${encodeURIComponent(eventType)}`);
+  };
 
   // Hero carousel slides
   const heroSlides = [
@@ -75,6 +81,20 @@ const Home = () => {
     };
 
     loadData();
+    
+    // Refresh stats every 30 seconds
+    const statsInterval = setInterval(() => {
+      fetch(`${import.meta.env.VITE_API_URL}/stats`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            setStats(data);
+          }
+        })
+        .catch(err => console.error("Failed to refresh stats:", err));
+    }, 30000);
+
+    return () => clearInterval(statsInterval);
   }, []);
 
   const handleSubscribe = (e) => {
@@ -293,14 +313,18 @@ const Home = () => {
             { type: "Health Camp", icon: "💉", desc: "Health checkups and medical camps" },
             { type: "Other", icon: "🌟", desc: "Various other community development activities" }
           ].map((cat) => (
-            <div
+            <button
               key={cat.type}
-              className="bg-base-200 rounded-2xl p-6 hover:shadow-lg transition-shadow"
+              onClick={() => handleCategoryClick(cat.type)}
+              className="bg-base-200 rounded-2xl p-6 hover:shadow-lg transition-all hover:scale-105 text-left group cursor-pointer"
             >
-              <div className="text-4xl mb-3">{cat.icon}</div>
-              <h3 className="font-semibold text-lg mb-2">{cat.type}</h3>
+              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
+              <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{cat.type}</h3>
               <p className="text-sm text-base-content/70">{cat.desc}</p>
-            </div>
+              <div className="mt-3 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Explore events →
+              </div>
+            </button>
           ))}
         </div>
       </section>
@@ -326,11 +350,12 @@ const Home = () => {
         {galleryLoading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="card-consistent bg-base-200 animate-pulse">
-                <div className="h-48 bg-base-300" />
-                <div className="p-4 space-y-2">
-                  <div className="h-4 bg-base-300 rounded w-3/4" />
-                  <div className="h-3 bg-base-300 rounded w-1/2" />
+              <div key={i} className="card-consistent bg-base-100 border-2 border-base-300 rounded-2xl overflow-hidden">
+                <div className="h-48 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer" />
+                <div className="p-4 space-y-3">
+                  <div className="h-5 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded w-3/4" />
+                  <div className="h-4 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded w-1/2" />
+                  <div className="h-8 bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%] animate-shimmer rounded mt-2" />
                 </div>
               </div>
             ))}
