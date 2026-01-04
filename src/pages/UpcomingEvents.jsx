@@ -283,7 +283,7 @@ const UpcomingEvents = () => {
             {currentEvents.map((event) => (
               <div
                 key={event._id}
-                className="card-consistent group overflow-hidden rounded-2xl border-2 border-base-300 bg-base-100 shadow-md hover:shadow-2xl transition-all duration-300 hover:border-primary/50 flex flex-col"
+                className="card-consistent group overflow-hidden rounded-2xl border-2 border-base-300 bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-primary/50 hover:-translate-y-1 flex flex-col"
               >
                 <div className="relative h-52 bg-base-200 overflow-hidden flex-shrink-0">
                   {event.thumbnail ? (
@@ -302,12 +302,12 @@ const UpcomingEvents = () => {
                       No image
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                   <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-lg">
+                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-xl backdrop-blur-sm">
                       {event.eventType}
                     </span>
-                    <div className="badge badge-sm bg-base-100/90 text-base-content border-0 shadow-md">
+                    <div className="badge badge-sm bg-base-100/95 text-base-content border-0 shadow-lg backdrop-blur-sm">
                       <FaCalendarAlt className="mr-1" />
                       {event.eventDate
                         ? new Date(event.eventDate).toLocaleDateString("en-US", {
