@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SectionCard from "../components/SectionCard";
 import toast from "react-hot-toast";
-import { FaUsers, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaChartLine, FaHandsHelping } from "react-icons/fa";
+import { FaUsers, FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaChartLine, FaHandsHelping, FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Home = () => {
@@ -11,7 +11,6 @@ const Home = () => {
   const [galleryLoading, setGalleryLoading] = useState(true);
   const [galleryError, setGalleryError] = useState("");
   const [email, setEmail] = useState("");
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [stats, setStats] = useState({ totalEvents: 0, totalUsers: 0, totalJoined: 0 });
 
   // Handle category click - redirect to explore events with filter
@@ -19,38 +18,12 @@ const Home = () => {
     navigate(`/upcoming-events?type=${encodeURIComponent(eventType)}`);
   };
 
-  // Hero carousel slides
-  const heroSlides = [
-    {
-      title: "Transform Your Community",
-      subtitle: "Join hands with thousands of volunteers making a difference",
-      image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200",
-      cta: "Explore Events",
-      link: "/upcoming-events"
-    },
-    {
-      title: "Create Impactful Events",
-      subtitle: "Organize clean-up drives, awareness programs, and charity events",
-      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200",
-      cta: "Create Event",
-      link: "/create-event"
-    },
-    {
-      title: "Track Your Social Impact",
-      subtitle: "Monitor all events you've joined and your contribution to society",
-      image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200",
-      cta: "View Dashboard",
-      link: "/dashboard"
-    }
-  ];
-
-  // Auto-rotate carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // Hero section content
+  const heroContent = {
+    title: "Together We Grow",
+    subtitle: "Events for a Better World",
+    description: "Join hands with passionate changemakers. Discover meaningful events, create lasting impact, and build a thriving community that cares.",
+  };
 
   // Load gallery events and stats
   useEffect(() => {
@@ -115,74 +88,176 @@ const Home = () => {
 
   return (
     <div className="space-y-12 md:space-y-20">
-      {/* 1. Hero / Carousel Section */}
-      <section className="relative h-[60vh] min-h-[400px] max-h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide.image})` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/80 to-secondary/80" />
-            </div>
-            <div className="relative h-full flex items-center justify-center text-center px-4">
-              <div className="max-w-4xl space-y-6">
-                <h1 className="text-4xl md:text-6xl font-bold text-base-100">
-                  {slide.title}
-                </h1>
-                <p className="text-lg md:text-xl text-base-100/90">
-                  {slide.subtitle}
-                </p>
-                <Link
-                  to={slide.link}
-                  className="btn btn-lg bg-base-100 text-primary hover:bg-base-200"
-                >
-                  {slide.cta}
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
+      {/* 1. Hero Section - Minimal Typography-Focused Design */}
+      <section className="relative min-h-[80vh] flex items-center justify-center py-20 md:py-32">
+        {/* Subtle Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-base-100 via-base-200/50 to-base-100 dark:from-base-100 dark:via-base-200/30 dark:to-base-100" />
         
-        {/* Carousel Controls */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === currentSlide
-                  ? "bg-base-100 w-8"
-                  : "bg-base-100/50 hover:bg-base-100/75"
-              }`}
-            />
-          ))}
+        {/* Content */}
+        <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8 md:space-y-12"
+          >
+            {/* Main Title - Typography Focus */}
+            <div className="space-y-4">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[1.1] tracking-tight"
+              >
+                <span className="text-base-content">{heroContent.title}</span>
+                <br />
+                <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                  {heroContent.subtitle}
+                </span>
+              </motion.h1>
+            </div>
+
+            {/* Description - Clean Typography */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl md:text-2xl lg:text-3xl text-base-content/70 dark:text-base-content/80 font-light leading-relaxed max-w-3xl mx-auto"
+            >
+              {heroContent.description}
+            </motion.p>
+
+            {/* CTA Buttons - Minimal Style */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-wrap gap-4 justify-center pt-8"
+            >
+              <Link
+                to="/upcoming-events"
+                className="btn btn-lg bg-primary text-primary-content hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold px-8 rounded-full"
+              >
+                Discover Events
+                <FaArrowRight className="ml-2" />
+              </Link>
+              <Link
+                to="/create-event"
+                className="btn btn-lg btn-outline border-2 border-primary text-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all hover:scale-105 font-semibold px-8 rounded-full"
+              >
+                Create Event
+              </Link>
+            </motion.div>
+
+            {/* Decorative Elements - Minimal */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+              className="flex items-center justify-center gap-2 pt-12"
+            >
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary to-transparent" />
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-primary to-transparent" />
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 right-8 animate-bounce">
-          <svg
-            className="w-6 h-6 text-base-100"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
+        {/* Scroll Indicator - Minimal */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        >
+          <div className="flex flex-col items-center gap-2 text-base-content/40 dark:text-base-content/50">
+            <span className="text-xs font-medium uppercase tracking-wider">Scroll</span>
+            <svg
+              className="w-5 h-5 animate-bounce"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              />
+            </svg>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* 2. Sponsors Section - Animated Icon Cloud */}
+      <section className="space-y-6 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+            Trusted by {stats.totalUsers > 0 ? `${stats.totalUsers.toLocaleString()}+` : "15,000+"} Organizations
+          </h2>
+          <p className="text-base text-base-content/60">
+            Join our growing community of changemakers
+          </p>
+        </motion.div>
+
+        {/* Animated Icon Cloud - Moving Right to Left */}
+        <div className="relative py-8 overflow-hidden">
+          <div className="flex gap-8 animate-scroll-left">
+            {/* First set of icons */}
+            {[
+              { icon: "🤝", name: "Community Hub", color: "text-primary" },
+              { icon: "🌱", name: "Green Initiative", color: "text-accent" },
+              { icon: "💚", name: "Social Impact", color: "text-secondary" },
+              { icon: "🌟", name: "Volunteer Plus", color: "text-primary" },
+              { icon: "✨", name: "Change Makers", color: "text-secondary" },
+              { icon: "🌍", name: "Unity Network", color: "text-accent" },
+              { icon: "🎯", name: "Impact Hub", color: "text-primary" },
+              { icon: "🚀", name: "Future Forward", color: "text-secondary" },
+            ].map((sponsor, index) => (
+              <div
+                key={`first-${index}`}
+                className="flex-shrink-0 bg-base-100 rounded-2xl p-6 border-2 border-base-300 shadow-lg hover:shadow-xl transition-all hover:scale-110 flex flex-col items-center justify-center min-w-[140px] min-h-[140px]"
+              >
+                <div className={`text-4xl mb-2 ${sponsor.color}`}>
+                  {sponsor.icon}
+                </div>
+                <div className="text-xs font-semibold text-base-content/70 text-center">
+                  {sponsor.name}
+                </div>
+              </div>
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {[
+              { icon: "🤝", name: "Community Hub", color: "text-primary" },
+              { icon: "🌱", name: "Green Initiative", color: "text-accent" },
+              { icon: "💚", name: "Social Impact", color: "text-secondary" },
+              { icon: "🌟", name: "Volunteer Plus", color: "text-primary" },
+              { icon: "✨", name: "Change Makers", color: "text-secondary" },
+              { icon: "🌍", name: "Unity Network", color: "text-accent" },
+              { icon: "🎯", name: "Impact Hub", color: "text-primary" },
+              { icon: "🚀", name: "Future Forward", color: "text-secondary" },
+            ].map((sponsor, index) => (
+              <div
+                key={`second-${index}`}
+                className="flex-shrink-0 bg-base-100 rounded-2xl p-6 border-2 border-base-300 shadow-lg hover:shadow-xl transition-all hover:scale-110 flex flex-col items-center justify-center min-w-[140px] min-h-[140px]"
+              >
+                <div className={`text-4xl mb-2 ${sponsor.color}`}>
+                  {sponsor.icon}
+                </div>
+                <div className="text-xs font-semibold text-base-content/70 text-center">
+                  {sponsor.name}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* 2. Event Highlights / Gallery Section - Moved right after Hero */}
+      {/* 3. Event Highlights / Gallery Section */}
       <section className="space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -233,7 +308,7 @@ const Home = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="card-consistent group overflow-hidden rounded-2xl border-2 border-base-300 bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-primary/50 hover:-translate-y-1"
+                className="card-consistent group overflow-hidden rounded-2xl border border-base-300 dark:border-base-300/50 bg-base-100 shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/50 hover:-translate-y-1"
               >
                 <div className="relative h-52 bg-base-200 overflow-hidden">
                   {event.thumbnail && event.thumbnail.trim() !== "" ? (
@@ -266,7 +341,7 @@ const Home = () => {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
                   <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
-                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-xl backdrop-blur-sm">
+                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-md">
                       {event.eventType}
                     </span>
                     <div className="badge badge-sm bg-base-100/95 text-base-content border-0 shadow-lg backdrop-blur-sm">
@@ -291,7 +366,7 @@ const Home = () => {
                   <div className="mt-auto pt-2">
                     <Link
                       to={`/event/${event._id}`}
-                      className="btn btn-primary btn-sm w-full shadow-md hover:shadow-lg transition-all"
+                      className="btn btn-primary btn-sm w-full rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
                     >
                       View Details
                     </Link>
@@ -644,25 +719,33 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* 11. CTA Section */}
+      {/* 11. CTA Section - Minimal Green Style */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-primary via-secondary to-accent rounded-3xl p-8 md:p-12 text-center text-base-100 shadow-2xl border-2 border-white/20"
+        className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-primary/10 dark:from-primary/20 dark:via-accent/10 dark:to-primary/20 rounded-2xl p-8 md:p-12 text-center border border-primary/20 dark:border-primary/30"
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-lg">
-          Ready to Make a Difference?
-        </h2>
-        <p className="text-lg text-base-100/90 mb-6 max-w-2xl mx-auto">
-          Join thousands of volunteers and organizers creating positive change in their communities
-        </p>
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Link to="/register" className="btn btn-lg bg-base-100 text-primary hover:bg-base-200 shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-            Get Started
-          </Link>
-          <Link to="/upcoming-events" className="btn btn-lg btn-outline border-2 border-base-100 text-base-100 hover:bg-base-100/20 shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-            Explore Events
-          </Link>
+        <div className="space-y-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content">
+            Ready to Make a Difference?
+          </h2>
+          <p className="text-lg md:text-xl text-base-content/70 dark:text-base-content/80 max-w-2xl mx-auto">
+            Join thousands of volunteers and organizers creating positive change in their communities
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center pt-4">
+            <Link 
+              to="/register" 
+              className="btn btn-lg bg-primary text-primary-content hover:bg-primary/90 shadow-md hover:shadow-lg transition-all hover:scale-105 font-semibold px-8 rounded-full"
+            >
+              Get Started
+            </Link>
+            <Link 
+              to="/upcoming-events" 
+              className="btn btn-lg btn-outline border-2 border-primary text-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all hover:scale-105 font-semibold px-8 rounded-full"
+            >
+              Explore Events
+            </Link>
+          </div>
         </div>
       </motion.section>
     </div>

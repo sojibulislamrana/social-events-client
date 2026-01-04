@@ -43,7 +43,7 @@ const Contact = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-4"
       >
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
           Get In Touch
         </h1>
         <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
@@ -58,7 +58,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 shadow-lg"
+            className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-6 border border-primary/20 dark:border-primary/30 shadow-md"
           >
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-xl bg-primary text-primary-content flex items-center justify-center shadow-md">
@@ -81,7 +81,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-2xl p-6 border border-secondary/20 shadow-lg"
+            className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-6 border border-primary/20 dark:border-primary/30 shadow-md"
           >
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-xl bg-secondary text-secondary-content flex items-center justify-center shadow-md">
@@ -104,7 +104,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-2xl p-6 border border-accent/20 shadow-lg"
+            className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-6 border border-primary/20 dark:border-primary/30 shadow-md"
           >
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-xl bg-accent text-accent-content flex items-center justify-center shadow-md">
@@ -129,7 +129,7 @@ const Contact = () => {
           transition={{ delay: 0.2 }}
           className="lg:col-span-2"
         >
-          <div className="bg-base-100 rounded-3xl border-2 border-base-300 shadow-xl p-6 md:p-8">
+          <div className="bg-base-100 rounded-2xl border border-base-300 dark:border-base-300/50 shadow-md p-6 md:p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center">
                 <FaPaperPlane />
@@ -190,7 +190,7 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="btn btn-primary w-full h-12 rounded-xl shadow-lg hover:shadow-xl transition-all gap-2"
+                className="btn btn-primary w-full h-12 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 gap-2"
                 disabled={loading}
               >
                 {loading ? (

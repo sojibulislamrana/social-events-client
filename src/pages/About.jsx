@@ -12,22 +12,22 @@ const About = () => {
       </section>
 
       <section className="grid gap-5 md:grid-cols-3">
-        <div className="bg-base-200 rounded-2xl p-4 md:p-5 space-y-1">
-          <h2 className="font-semibold text-base">Our Mission</h2>
+        <div className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-4 md:p-5 space-y-1 border border-primary/20 dark:border-primary/30">
+          <h2 className="font-semibold text-base text-primary">Our Mission</h2>
           <p className="text-sm text-base-content/70">
             To make it easy for anyone to contribute to their local community by
             organizing and participating in meaningful social activities.
           </p>
         </div>
-        <div className="bg-base-200 rounded-2xl p-4 md:p-5 space-y-1">
-          <h2 className="font-semibold text-base">What We Offer</h2>
+        <div className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-4 md:p-5 space-y-1 border border-primary/20 dark:border-primary/30">
+          <h2 className="font-semibold text-base text-primary">What We Offer</h2>
           <p className="text-sm text-base-content/70">
             Create events, manage participants, track joined events, and promote
             social impact projects in a single place.
           </p>
         </div>
-        <div className="bg-base-200 rounded-2xl p-4 md:p-5 space-y-1">
-          <h2 className="font-semibold text-base">Who It’s For</h2>
+        <div className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-2xl p-4 md:p-5 space-y-1 border border-primary/20 dark:border-primary/30">
+          <h2 className="font-semibold text-base text-primary">Who It's For</h2>
           <p className="text-sm text-base-content/70">
             Volunteers, students, NGOs, community leaders, and anyone who cares
             about social development.

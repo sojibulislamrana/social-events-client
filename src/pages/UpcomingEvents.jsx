@@ -156,13 +156,13 @@ const UpcomingEvents = () => {
             Discover and join upcoming social development events in your community
           </p>
         </div>
-        <Link to="/create-event" className="btn btn-primary btn-sm md:btn-md">
+        <Link to="/create-event" className="btn btn-primary btn-sm md:btn-md rounded-full">
           + Create Event
         </Link>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-base-200 rounded-2xl p-4 md:p-6 space-y-4">
+      <div className="bg-base-200/50 dark:bg-base-200/30 rounded-2xl p-4 md:p-6 space-y-4 border border-primary/10 dark:border-primary/20">
         {/* Search Bar */}
         <div className="form-control">
           <div className="relative">
@@ -283,7 +283,7 @@ const UpcomingEvents = () => {
             {currentEvents.map((event) => (
               <div
                 key={event._id}
-                className="card-consistent group overflow-hidden rounded-2xl border-2 border-base-300 bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-primary/50 hover:-translate-y-1 flex flex-col"
+                className="card-consistent group overflow-hidden rounded-2xl border border-base-300 dark:border-base-300/50 bg-base-100 shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/50 hover:-translate-y-1 flex flex-col"
               >
                 <div className="relative h-52 bg-base-200 overflow-hidden flex-shrink-0">
                   {event.thumbnail ? (
@@ -304,7 +304,7 @@ const UpcomingEvents = () => {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                   <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-xl backdrop-blur-sm">
+                    <span className="badge badge-lg bg-primary text-primary-content border-0 shadow-md">
                       {event.eventType}
                     </span>
                     <div className="badge badge-sm bg-base-100/95 text-base-content border-0 shadow-lg backdrop-blur-sm">
@@ -340,7 +340,7 @@ const UpcomingEvents = () => {
                   <div className="mt-auto pt-2 flex-shrink-0">
                     <Link
                       to={`/event/${event._id}`}
-                      className="btn btn-primary btn-sm w-full shadow-md hover:shadow-lg transition-all"
+                      className="btn btn-primary btn-sm w-full rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
                     >
                       View Details
                     </Link>

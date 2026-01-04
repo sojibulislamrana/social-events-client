@@ -338,7 +338,7 @@ const CreateEvent = () => {
           </div>
 
           {/* Organizer Info */}
-          <div className="bg-base-200 rounded-xl p-4 border border-base-300">
+          <div className="bg-gradient-to-br from-primary/10 to-accent/5 rounded-xl p-4 border border-primary/20 dark:border-primary/30">
             <div className="flex items-center gap-2 mb-2">
               <FaCheckCircle className="text-secondary" />
               <span className="font-semibold text-sm">Organizer Information</span>
@@ -355,7 +355,7 @@ const CreateEvent = () => {
           <div className="pt-4">
             <button
               type="submit"
-              className="btn btn-primary w-full md:w-auto min-w-[200px] h-12 rounded-xl shadow-lg hover:shadow-xl transition-all gap-2"
+              className="btn btn-primary w-full md:w-auto min-w-[200px] h-12 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 gap-2"
               disabled={loading}
             >
               {loading ? (

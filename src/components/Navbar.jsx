@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { ThemeContext } from "../providers/ThemeProvider";
 import { FaBars, FaTimes, FaUser, FaSignOutAlt, FaHome } from "react-icons/fa";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -16,10 +17,10 @@ const Navbar = () => {
   };
 
   const navLinkClass = ({ isActive }) =>
-    `px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+    `px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
       isActive
-        ? "bg-white/25 dark:bg-white/15 text-white shadow-xl backdrop-blur-md border-2 border-white/40 font-semibold scale-105"
-        : "text-white/95 hover:bg-white/15 hover:text-white hover:backdrop-blur-md border border-transparent hover:border-white/30 hover:scale-105"
+        ? "bg-white/20 text-white shadow-md backdrop-blur-sm border border-white/30 font-semibold"
+        : "text-white/90 hover:bg-white/10 hover:text-white hover:backdrop-blur-sm border border-transparent hover:border-white/20"
     }`;
 
   const navItems = (
@@ -52,10 +53,8 @@ const Navbar = () => {
     <header className="sticky top-0 z-50">
       {/* Glassmorphism Navbar */}
       <nav className="relative">
-        {/* Background with gradient and glass effect - Enhanced */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/80 to-secondary/90 dark:from-primary/70 dark:via-primary/60 dark:to-secondary/70 backdrop-blur-2xl border-b border-white/30 dark:border-white/20 shadow-2xl" />
-        {/* Animated gradient overlay for extra pop */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
+        {/* Background with green gradient - Minimal Style */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-accent dark:from-primary/90 dark:via-primary/85 dark:to-accent/90 backdrop-blur-xl border-b border-primary/20 dark:border-primary/30 shadow-lg" />
         
         {/* Content */}
         <div className="relative navbar max-w-7xl mx-auto px-4 md:px-6 py-4">
@@ -69,19 +68,8 @@ const Navbar = () => {
               {mobileMenuOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
             </button>
 
-            {/* Logo - Enhanced */}
-            <Link
-              to="/"
-              className="flex items-center gap-3 hover:opacity-90 transition-all group"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/30 to-white/10 dark:from-white/20 dark:to-white/5 backdrop-blur-md flex items-center justify-center shadow-xl border-2 border-white/40 dark:border-white/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                <span className="text-xl font-black text-white drop-shadow-lg">SE</span>
-              </div>
-              <div className="hidden sm:block">
-                <span className="text-xl font-bold text-white drop-shadow-lg group-hover:drop-shadow-xl transition-all">SocialEvents</span>
-                <p className="text-[10px] text-white/90 leading-tight font-medium">Community Platform</p>
-              </div>
-            </Link>
+            {/* Professional Logo */}
+            <Logo />
           </div>
 
           {/* CENTER — Desktop Nav */}
@@ -107,8 +95,8 @@ const Navbar = () => {
 
           {/* RIGHT — Theme toggle + Auth */}
           <div className="navbar-end gap-2 md:gap-3">
-            {/* Theme Switch - Glass Style - Enhanced */}
-            <label className="swap swap-rotate cursor-pointer p-2.5 rounded-xl hover:bg-white/20 backdrop-blur-md border-2 border-white/30 transition-all hover:scale-110 hover:shadow-lg">
+            {/* Theme Switch - Minimal Style */}
+            <label className="swap swap-rotate cursor-pointer p-2.5 rounded-full hover:bg-white/15 backdrop-blur-sm border border-white/25 transition-all hover:scale-105">
               <input
                 type="checkbox"
                 onChange={toggleTheme}
@@ -204,13 +192,13 @@ const Navbar = () => {
               <div className="flex gap-2">
                 <Link
                   to="/login"
-                  className="btn btn-sm bg-white/25 dark:bg-white/15 text-white border-2 border-white/40 hover:bg-white/35 dark:hover:bg-white/25 backdrop-blur-md transition-all shadow-lg hover:scale-110 hover:shadow-xl font-semibold"
+                  className="btn btn-sm bg-white/15 text-white border border-white/25 hover:bg-white/20 backdrop-blur-sm transition-all hover:scale-105 font-medium rounded-full"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="btn btn-sm bg-white text-primary hover:bg-white/95 shadow-xl transition-all hover:scale-110 hover:shadow-2xl font-semibold border-2 border-transparent hover:border-primary/20"
+                  className="btn btn-sm bg-white text-primary hover:bg-white/95 shadow-md transition-all hover:scale-105 font-semibold border border-transparent hover:border-primary/20 rounded-full"
                 >
                   Register
                 </Link>
