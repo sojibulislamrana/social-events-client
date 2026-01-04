@@ -181,155 +181,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 2. Statistics Section */}
-      <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 rounded-3xl p-8 md:p-12">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Platform Statistics</h2>
-          <p className="text-base-content/70">Real-time data from our community</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-base-100 rounded-2xl p-6 text-center shadow-lg">
-            <FaCalendarAlt className="text-4xl text-primary mx-auto mb-3" />
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-              {stats.totalEvents}+
-            </div>
-            <p className="text-base-content/70">Total Events</p>
-          </div>
-          <div className="bg-base-100 rounded-2xl p-6 text-center shadow-lg">
-            <FaUsers className="text-4xl text-secondary mx-auto mb-3" />
-            <div className="text-3xl md:text-4xl font-bold text-secondary mb-2">
-              {stats.totalUsers}+
-            </div>
-            <p className="text-base-content/70">Active Users</p>
-          </div>
-          <div className="bg-base-100 rounded-2xl p-6 text-center shadow-lg">
-            <FaHeart className="text-4xl text-accent mx-auto mb-3" />
-            <div className="text-3xl md:text-4xl font-bold text-accent mb-2">
-              {stats.totalJoined}+
-            </div>
-            <p className="text-base-content/70">Event Participations</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Features Section */}
-      <section className="space-y-6">
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold">
-            Everything You Need in One Platform
-          </h2>
-          <p className="max-w-2xl mx-auto text-base text-base-content/70">
-            Our application makes it simple to create events, discover new
-            opportunities, and keep track of your social impact journey.
-          </p>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          <SectionCard
-            title="Create Events Easily"
-            subtitle="Event Management"
-            icon={<span>📝</span>}
-          >
-            Add title, description, date, location, and event type with a simple
-            form. Your event becomes discoverable to others instantly.
-          </SectionCard>
-
-          <SectionCard
-            title="Join & Track Events"
-            subtitle="Your Activity"
-            icon={<span>📅</span>}
-            accent="secondary"
-          >
-            Join events that matter to you and see all your joined events in a
-            dedicated page, sorted by date.
-          </SectionCard>
-
-          <SectionCard
-            title="Manage Your Campaigns"
-            subtitle="Organizer Tools"
-            icon={<span>⚙️</span>}
-            accent="accent"
-          >
-            Edit event details, update information, and keep participants
-            up-to-date with the latest changes.
-          </SectionCard>
-        </div>
-      </section>
-
-      {/* 4. Services Section */}
-      <section className="bg-base-200 rounded-3xl p-8 md:p-12 space-y-8">
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold">Our Services</h2>
-          <p className="max-w-2xl mx-auto text-base text-base-content/70">
-            Comprehensive tools and features to support your community engagement
-          </p>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-base-100 rounded-2xl p-6 text-center">
-            <FaHandsHelping className="text-3xl text-primary mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">Event Discovery</h3>
-            <p className="text-sm text-base-content/70">
-              Browse and filter events by type, date, and location
-            </p>
-          </div>
-          <div className="bg-base-100 rounded-2xl p-6 text-center">
-            <FaChartLine className="text-3xl text-secondary mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">Analytics Dashboard</h3>
-            <p className="text-sm text-base-content/70">
-              Track your participation and impact with detailed insights
-            </p>
-          </div>
-          <div className="bg-base-100 rounded-2xl p-6 text-center">
-            <FaMapMarkerAlt className="text-3xl text-accent mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">Location-Based</h3>
-            <p className="text-sm text-base-content/70">
-              Find events near you with location-based search
-            </p>
-          </div>
-          <div className="bg-base-100 rounded-2xl p-6 text-center">
-            <FaUsers className="text-3xl text-primary mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">Community Building</h3>
-            <p className="text-sm text-base-content/70">
-              Connect with like-minded volunteers and organizers
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Categories Section */}
-      <section className="space-y-6">
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold">Event Categories</h2>
-          <p className="max-w-2xl mx-auto text-base text-base-content/70">
-            Explore different types of social development events
-          </p>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            { type: "Cleanup", icon: "🧹", desc: "Community clean-up drives and environmental initiatives" },
-            { type: "Plantation", icon: "🌳", desc: "Tree planting and green space development" },
-            { type: "Donation", icon: "🤝", desc: "Charity events and donation campaigns" },
-            { type: "Awareness", icon: "📢", desc: "Educational and awareness programs" },
-            { type: "Health Camp", icon: "💉", desc: "Health checkups and medical camps" },
-            { type: "Other", icon: "🌟", desc: "Various other community development activities" }
-          ].map((cat) => (
-            <button
-              key={cat.type}
-              onClick={() => handleCategoryClick(cat.type)}
-              className="bg-base-200 rounded-2xl p-6 hover:shadow-lg transition-all hover:scale-105 text-left group cursor-pointer"
-            >
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
-              <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{cat.type}</h3>
-              <p className="text-sm text-base-content/70">{cat.desc}</p>
-              <div className="mt-3 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                Explore events →
-              </div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* 6. Event Highlights / Gallery Section */}
+      {/* 2. Event Highlights / Gallery Section - Moved right after Hero */}
       <section className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div>
@@ -374,23 +226,41 @@ const Home = () => {
                 className="card-consistent group overflow-hidden rounded-2xl border bg-base-100 shadow-sm hover:shadow-lg transition-shadow duration-200"
               >
                 <div className="relative h-48 bg-base-200 overflow-hidden">
-                  {event.thumbnail ? (
-                    <img
-                      src={event.thumbnail}
-                      alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                  {event.thumbnail && event.thumbnail.trim() !== "" ? (
+                    <>
+                      <img
+                        src={event.thumbnail}
+                        alt={event.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                        onError={(e) => {
+                          // If image fails to load, hide it and show fallback
+                          e.target.style.display = 'none';
+                          const fallback = e.target.nextElementSibling;
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
+                      />
+                      <div className="w-full h-full hidden items-center justify-center text-sm text-base-content/60 bg-gradient-to-br from-base-300 to-base-200">
+                        <div className="text-center">
+                          <p className="font-semibold">{event.eventType}</p>
+                          <p className="text-xs mt-1">Image unavailable</p>
+                        </div>
+                      </div>
+                    </>
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-sm text-base-content/60">
-                      No image available
+                    <div className="w-full h-full flex items-center justify-center text-sm text-base-content/60 bg-gradient-to-br from-base-300 to-base-200">
+                      <div className="text-center">
+                        <p className="font-semibold">{event.eventType}</p>
+                        <p className="text-xs mt-1">No image available</p>
+                      </div>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
-                    <span className="badge badge-sm badge-outline border-base-100 text-base-100">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
+                    <span className="badge badge-sm badge-outline border-base-100 text-base-100 bg-black/30 backdrop-blur-sm">
                       {event.eventType}
                     </span>
-                    <span className="text-xs text-base-100/80">
+                    <span className="text-xs text-base-100/90 bg-black/30 backdrop-blur-sm px-2 py-1 rounded">
                       {event.eventDate
                         ? new Date(event.eventDate).toLocaleDateString()
                         : ""}
@@ -401,7 +271,8 @@ const Home = () => {
                   <h3 className="font-semibold text-base line-clamp-2">
                     {event.title}
                   </h3>
-                  <p className="text-sm text-base-content/70 line-clamp-2">
+                  <p className="text-sm text-base-content/70 line-clamp-2 flex items-center gap-1">
+                    <FaMapMarkerAlt className="text-xs text-primary" />
                     {event.location}
                   </p>
                   <div className="mt-auto pt-2">
@@ -417,6 +288,154 @@ const Home = () => {
             ))}
           </div>
         )}
+      </section>
+
+      {/* 3. Statistics Section */}
+      <section className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 rounded-3xl p-8 md:p-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">Platform Statistics</h2>
+          <p className="text-base-content/70">Real-time data from our community</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-base-100 rounded-2xl p-6 text-center shadow-lg">
+            <FaCalendarAlt className="text-4xl text-primary mx-auto mb-3" />
+            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+              {stats.totalEvents}+
+            </div>
+            <p className="text-base-content/70">Total Events</p>
+          </div>
+          <div className="bg-base-100 rounded-2xl p-6 text-center shadow-lg">
+            <FaUsers className="text-4xl text-secondary mx-auto mb-3" />
+            <div className="text-3xl md:text-4xl font-bold text-secondary mb-2">
+              {stats.totalUsers}+
+            </div>
+            <p className="text-base-content/70">Active Users</p>
+          </div>
+          <div className="bg-base-100 rounded-2xl p-6 text-center shadow-lg">
+            <FaHeart className="text-4xl text-accent mx-auto mb-3" />
+            <div className="text-3xl md:text-4xl font-bold text-accent mb-2">
+              {stats.totalJoined}+
+            </div>
+            <p className="text-base-content/70">Event Participations</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Features Section */}
+      <section className="space-y-6">
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold">
+            Everything You Need in One Platform
+          </h2>
+          <p className="max-w-2xl mx-auto text-base text-base-content/70">
+            Our application makes it simple to create events, discover new
+            opportunities, and keep track of your social impact journey.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          <SectionCard
+            title="Create Events Easily"
+            subtitle="Event Management"
+            icon={<span>📝</span>}
+          >
+            Add title, description, date, location, and event type with a simple
+            form. Your event becomes discoverable to others instantly.
+          </SectionCard>
+
+          <SectionCard
+            title="Join & Track Events"
+            subtitle="Your Activity"
+            icon={<span>📅</span>}
+            accent="secondary"
+          >
+            Join events that matter to you and see all your joined events in a
+            dedicated page, sorted by date.
+          </SectionCard>
+
+          <SectionCard
+            title="Manage Your Campaigns"
+            subtitle="Organizer Tools"
+            icon={<span>⚙️</span>}
+            accent="accent"
+          >
+            Edit event details, update information, and keep participants
+            up-to-date with the latest changes.
+          </SectionCard>
+        </div>
+      </section>
+
+      {/* 5. Services Section */}
+      <section className="bg-base-200 rounded-3xl p-8 md:p-12 space-y-8">
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold">Our Services</h2>
+          <p className="max-w-2xl mx-auto text-base text-base-content/70">
+            Comprehensive tools and features to support your community engagement
+          </p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="bg-base-100 rounded-2xl p-6 text-center">
+            <FaHandsHelping className="text-3xl text-primary mx-auto mb-3" />
+            <h3 className="font-semibold mb-2">Event Discovery</h3>
+            <p className="text-sm text-base-content/70">
+              Browse and filter events by type, date, and location
+            </p>
+          </div>
+          <div className="bg-base-100 rounded-2xl p-6 text-center">
+            <FaChartLine className="text-3xl text-secondary mx-auto mb-3" />
+            <h3 className="font-semibold mb-2">Analytics Dashboard</h3>
+            <p className="text-sm text-base-content/70">
+              Track your participation and impact with detailed insights
+            </p>
+          </div>
+          <div className="bg-base-100 rounded-2xl p-6 text-center">
+            <FaMapMarkerAlt className="text-3xl text-accent mx-auto mb-3" />
+            <h3 className="font-semibold mb-2">Location-Based</h3>
+            <p className="text-sm text-base-content/70">
+              Find events near you with location-based search
+            </p>
+          </div>
+          <div className="bg-base-100 rounded-2xl p-6 text-center">
+            <FaUsers className="text-3xl text-primary mx-auto mb-3" />
+            <h3 className="font-semibold mb-2">Community Building</h3>
+            <p className="text-sm text-base-content/70">
+              Connect with like-minded volunteers and organizers
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Categories Section */}
+      <section className="space-y-6">
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold">Event Categories</h2>
+          <p className="max-w-2xl mx-auto text-base text-base-content/70">
+            Explore different types of social development events
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            { type: "Cleanup", icon: "🧹", desc: "Community clean-up drives and environmental initiatives" },
+            { type: "Plantation", icon: "🌳", desc: "Tree planting and green space development" },
+            { type: "Donation", icon: "🤝", desc: "Charity events and donation campaigns" },
+            { type: "Awareness", icon: "📢", desc: "Educational and awareness programs" },
+            { type: "Health Camp", icon: "💉", desc: "Health checkups and medical camps" },
+            { type: "Other", icon: "🌟", desc: "Various other community development activities" }
+          ].map((cat) => (
+            <button
+              key={cat.type}
+              onClick={() => handleCategoryClick(cat.type)}
+              className="bg-base-200 rounded-2xl p-6 hover:shadow-lg transition-all hover:scale-105 text-left group cursor-pointer"
+            >
+              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
+              <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{cat.type}</h3>
+              <p className="text-sm text-base-content/70">{cat.desc}</p>
+              <div className="mt-3 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Explore events →
+              </div>
+            </button>
+          ))}
+        </div>
       </section>
 
       {/* 7. Testimonials Section */}

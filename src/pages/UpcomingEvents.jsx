@@ -291,6 +291,11 @@ const UpcomingEvents = () => {
                       src={event.thumbnail}
                       alt={event.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop";
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-sm text-base-content/60 bg-gradient-to-br from-base-300 to-base-200">

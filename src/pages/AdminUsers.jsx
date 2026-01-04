@@ -1,89 +1,210 @@
-import { useEffect, useState } from "react";
-import { FaUsers, FaEnvelope, FaCalendarAlt } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../providers/AuthProvider";
+import toast from "react-hot-toast";
+import { FaUsers, FaCrown, FaUserShield, FaSpinner } from "react-icons/fa";
+import Spinner from "../components/Spinner";
 
 const AdminUsers = () => {
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    totalEvents: 0,
-    totalJoined: 0,
-  });
+  const { user, userRole } = useContext(AuthContext);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState({});
 
   useEffect(() => {
-    const loadStats = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/stats`);
-        const data = await res.json();
+    if (userRole === "admin" && user?.email) {
+      loadUsers();
+    }
+  }, [userRole, user?.email]);
 
-        if (res.ok && data.ok) {
-          setStats(data);
-        }
-      } catch (err) {
-        console.error("Failed to load stats:", err);
-      } finally {
-        setLoading(false);
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/users?requestorEmail=${user.email}`
+      );
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.message || "Failed to load users");
       }
-    };
 
-    loadStats();
-  }, []);
+      setUsers(data.users || []);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Failed to load users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateUserRole = async (userEmail, newRole) => {
+    if (!user?.email) {
+      toast.error("You must be logged in");
+      return;
+    }
+
+    try {
+      setUpdating({ ...updating, [userEmail]: true });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/${userEmail}/role`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            role: newRole,
+            requestorEmail: user.email,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.message || "Failed to update role");
+      }
+
+      toast.success(`User role updated to ${newRole}`);
+      loadUsers(); // Reload users
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Failed to update role");
+    } finally {
+      setUpdating({ ...updating, [userEmail]: false });
+    }
+  };
+
+  if (userRole !== "admin") {
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
+        <p className="text-base-content/70">Only administrators can access this page.</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <span className="loading loading-spinner loading-lg" />
+        <Spinner size="lg" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">User Statistics (Admin)</h1>
-        <p className="text-base-content/70">
-          Overview of platform users and activity
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-base-100 rounded-2xl p-6 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <FaUsers className="text-3xl text-primary" />
-          </div>
-          <div className="text-3xl font-bold mb-2">{stats.totalUsers}</div>
-          <p className="text-sm text-base-content/70">Total Users</p>
-        </div>
-
-        <div className="bg-base-100 rounded-2xl p-6 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <FaCalendarAlt className="text-3xl text-secondary" />
-          </div>
-          <div className="text-3xl font-bold mb-2">{stats.totalEvents}</div>
-          <p className="text-sm text-base-content/70">Total Events</p>
-        </div>
-
-        <div className="bg-base-100 rounded-2xl p-6 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <FaEnvelope className="text-3xl text-accent" />
-          </div>
-          <div className="text-3xl font-bold mb-2">{stats.totalJoined}</div>
-          <p className="text-sm text-base-content/70">Total Participations</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold flex items-center gap-3">
+            <FaUsers className="text-primary" />
+            User Management
+          </h1>
+          <p className="text-base-content/70 mt-1">
+            Manage user roles and permissions
+          </p>
         </div>
       </div>
 
-      <div className="bg-base-100 rounded-2xl p-6 shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Admin Notes</h2>
-        <div className="space-y-2 text-sm text-base-content/70">
-          <p>
-            • User management features can be extended based on requirements
-          </p>
-          <p>
-            • Additional admin features like user deletion, event moderation, etc. can be added
-          </p>
-          <p>
-            • This is a demo admin panel showing basic statistics and event management
-          </p>
+      <div className="bg-base-100 rounded-3xl border shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Current Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-8 text-base-content/70">
+                    No users found
+                  </td>
+                </tr>
+              ) : (
+                users.map((u) => (
+                  <tr key={u.email}>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        {u.photoURL ? (
+                          <img
+                            src={u.photoURL}
+                            alt={u.displayName}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                            {u.displayName?.charAt(0) || u.email.charAt(0)}
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-semibold">
+                            {u.displayName || "No name"}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{u.email}</td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          u.role === "admin"
+                            ? "badge-accent"
+                            : "badge-primary"
+                        }`}
+                      >
+                        {u.role === "admin" ? (
+                          <>
+                            <FaCrown className="mr-1" /> Admin
+                          </>
+                        ) : (
+                          <>
+                            <FaUserShield className="mr-1" /> User
+                          </>
+                        )}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="flex gap-2">
+                        {u.role === "user" ? (
+                          <button
+                            className="btn btn-sm btn-accent"
+                            onClick={() => updateUserRole(u.email, "admin")}
+                            disabled={updating[u.email]}
+                          >
+                            {updating[u.email] ? (
+                              <Spinner size="sm" />
+                            ) : (
+                              <>
+                                <FaCrown className="mr-1" /> Make Admin
+                              </>
+                            )}
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => updateUserRole(u.email, "user")}
+                            disabled={updating[u.email]}
+                          >
+                            {updating[u.email] ? (
+                              <Spinner size="sm" />
+                            ) : (
+                              <>
+                                <FaUserShield className="mr-1" /> Make User
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -91,4 +212,3 @@ const AdminUsers = () => {
 };
 
 export default AdminUsers;
-

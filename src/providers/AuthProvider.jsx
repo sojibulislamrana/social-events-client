@@ -15,20 +15,36 @@ export const AuthContext = createContext(null);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Helper function to determine user role
-const getUserRole = (email) => {
-  if (!email) return "user";
-  // Admin emails
-  if (email === "admin@demo.com" || email.includes("admin")) {
-    return "admin";
-  }
-  return "user";
-};
-
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState("user");
   const [loading, setLoading] = useState(true);
+
+  // Sync user with MongoDB
+  const syncUserWithMongoDB = async (firebaseUser) => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/sync`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.ok && data.user) {
+        setUserRole(data.user.role || "user");
+        return data.user;
+      }
+    } catch (err) {
+      console.error("Failed to sync user with MongoDB:", err);
+    }
+    return null;
+  };
 
   // register
   const createUser = (email, password) => {
@@ -56,10 +72,11 @@ const AuthProvider = ({ children }) => {
 
   // observer
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        setUserRole(getUserRole(currentUser.email));
+        // Sync with MongoDB and get role
+        await syncUserWithMongoDB(currentUser);
       } else {
         setUserRole("user");
       }
@@ -77,6 +94,7 @@ const AuthProvider = ({ children }) => {
     signInUser,
     signInWithGoogle,
     logOut,
+    syncUserWithMongoDB, // Export for manual sync if needed
   };
 
   return (

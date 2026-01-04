@@ -2,11 +2,13 @@ import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import toast from "react-hot-toast";
+import Spinner from "../components/Spinner";
 
 const Login = () => {
-  const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const { signInUser, signInWithGoogle, syncUserWithMongoDB } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -37,7 +39,9 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      await signInUser(creds.email, creds.password);
+      const result = await signInUser(creds.email, creds.password);
+      // Sync with MongoDB
+      await syncUserWithMongoDB(result.user);
       toast.success(`Logged in as ${type}!`);
       navigate(from, { replace: true });
     } catch (err) {
@@ -57,7 +61,9 @@ const Login = () => {
     const password = e.target.password.value;
 
     try {
-      await signInUser(email, password);
+      const result = await signInUser(email, password);
+      // Sync with MongoDB
+      await syncUserWithMongoDB(result.user);
       toast.success("Logged in successfully!");
       navigate(from, { replace: true });
     } catch (err) {
@@ -69,16 +75,18 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
+    setGoogleLoading(true);
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      // Sync with MongoDB
+      await syncUserWithMongoDB(result.user);
       toast.success("Logged in with Google!");
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
       toast.error("Google login failed!");
     } finally {
-      setLoading(false);
+      setGoogleLoading(false);
     }
   };
 
@@ -124,10 +132,18 @@ const Login = () => {
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button
+              type="submit"
               className="btn btn-primary w-full h-12 rounded-xl mt-2"
-              disabled={loading}
+              disabled={loading || googleLoading}
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
 
@@ -140,16 +156,16 @@ const Login = () => {
               <button
                 onClick={() => handleDemoLogin("user")}
                 className="btn btn-outline btn-sm"
-                disabled={loading}
+                disabled={loading || googleLoading}
               >
-                Demo User
+                {loading ? <Spinner size="sm" /> : "Demo User"}
               </button>
               <button
                 onClick={() => handleDemoLogin("admin")}
                 className="btn btn-outline btn-sm"
-                disabled={loading}
+                disabled={loading || googleLoading}
               >
-                Demo Admin
+                {loading ? <Spinner size="sm" /> : "Demo Admin"}
               </button>
             </div>
           </div>
@@ -159,9 +175,16 @@ const Login = () => {
           <button
             onClick={handleGoogleLogin}
             className="btn btn-outline w-full h-12 rounded-xl"
-            disabled={loading}
+            disabled={loading || googleLoading}
           >
-            {loading ? "Logging in..." : "Continue with Google"}
+            {googleLoading ? (
+              <>
+                <Spinner size="sm" />
+                Logging in...
+              </>
+            ) : (
+              "Continue with Google"
+            )}
           </button>
 
           <p className="text-sm text-center pt-2">

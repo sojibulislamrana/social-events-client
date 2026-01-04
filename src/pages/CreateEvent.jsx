@@ -13,6 +13,8 @@ import {
   FaPlusCircle,
   FaSpinner,
   FaCheckCircle,
+  FaUpload,
+  FaTimes,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Spinner from "../components/Spinner";
@@ -24,10 +26,49 @@ const CreateEvent = () => {
   const [title, setTitle] = useState("");
   const [eventType, setEventType] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [eventDate, setEventDate] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  // Handle image file upload and convert to base64
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file.");
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be less than 5MB.");
+      return;
+    }
+
+    setThumbnailFile(file);
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setThumbnailPreview(reader.result);
+      // Store base64 string
+      setThumbnail(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Remove uploaded image
+  const handleRemoveImage = () => {
+    setThumbnailFile(null);
+    setThumbnailPreview("");
+    setThumbnail("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +83,11 @@ const CreateEvent = () => {
       return;
     }
 
+    if (!thumbnail && !thumbnailPreview) {
+      toast.error("Please upload an image or provide an image URL.");
+      return;
+    }
+
     const now = new Date();
     const selected = new Date(eventDate);
     if (selected <= now) {
@@ -49,11 +95,14 @@ const CreateEvent = () => {
       return;
     }
 
+    // Use uploaded image (base64) or URL
+    const imageData = thumbnailPreview || thumbnail;
+
     const eventData = {
       title,
       description,
       eventType,
-      thumbnail,
+      thumbnail: imageData, // This will be base64 string if uploaded, or URL if provided
       location,
       eventDate: selected.toISOString(),
       creatorEmail: user.email,
@@ -165,22 +214,65 @@ const CreateEvent = () => {
               <label className="label">
                 <span className="label-text font-semibold flex items-center gap-2">
                   <FaImage className="text-primary" />
-                  Thumbnail Image URL
+                  Event Image
                 </span>
               </label>
-              <input
-                type="url"
-                placeholder="https://images.unsplash.com/photo-..."
-                className="input input-bordered w-full h-12 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                value={thumbnail}
-                onChange={(e) => setThumbnail(e.target.value)}
-                required
-              />
-              <label className="label">
-                <span className="label-text-alt text-xs text-base-content/60">
-                  Use a public image URL (e.g., Unsplash, Pexels)
-                </span>
-              </label>
+              
+              {/* Image Upload */}
+              {!thumbnailPreview ? (
+                <div className="space-y-2">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-primary/30 rounded-xl cursor-pointer bg-base-200 hover:bg-base-300 transition-colors group">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <FaUpload className="w-8 h-8 mb-2 text-primary group-hover:scale-110 transition-transform" />
+                      <p className="mb-2 text-sm text-base-content/70">
+                        <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                      </p>
+                      <p className="text-xs text-base-content/60">PNG, JPG, GIF (MAX. 5MB)</p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </label>
+                  
+                  <div className="divider text-xs">OR</div>
+                  
+                  <input
+                    type="url"
+                    placeholder="https://images.unsplash.com/photo-..."
+                    className="input input-bordered w-full h-12 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    value={thumbnail}
+                    onChange={(e) => setThumbnail(e.target.value)}
+                  />
+                  <label className="label">
+                    <span className="label-text-alt text-xs text-base-content/60">
+                      Enter image URL if you prefer
+                    </span>
+                  </label>
+                </div>
+              ) : (
+                <div className="relative">
+                  <div className="relative w-full h-48 rounded-xl overflow-hidden border-2 border-primary/30">
+                    <img
+                      src={thumbnailPreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-2 right-2 btn btn-circle btn-sm btn-error shadow-lg"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                  <p className="text-xs text-base-content/60 mt-2 text-center">
+                    Image ready to upload
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="form-control">

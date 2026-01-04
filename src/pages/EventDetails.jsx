@@ -2,8 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import toast from "react-hot-toast";
-import { FaMapMarkerAlt, FaCalendarAlt, FaUser, FaUsers, FaShareAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaCalendarAlt, FaUser, FaUsers, FaShareAlt, FaSpinner } from "react-icons/fa";
 import CountdownTimer from "../components/CountdownTimer";
+import Spinner from "../components/Spinner";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -16,21 +17,6 @@ const EventDetails = () => {
   const [loading, setLoading] = useState(true);
   const [joinLoading, setJoinLoading] = useState(false);
   const [error, setError] = useState("");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Generate multiple image URLs (in real app, these would come from backend)
-  const getEventImages = (event) => {
-    if (!event) return [];
-    const images = [event.thumbnail];
-    // Generate additional placeholder images for demo
-    for (let i = 1; i < 3; i++) {
-      images.push(
-        event.thumbnail?.replace("600x400", `600x400&text=Image+${i + 1}`) ||
-        `https://placehold.co/600x400?text=Event+Image+${i + 1}`
-      );
-    }
-    return images.filter(Boolean);
-  };
 
   // Load event details
   useEffect(() => {
@@ -157,7 +143,6 @@ const EventDetails = () => {
     );
   }
 
-  const eventImages = getEventImages(event);
   const eventDateStr = event.eventDate
     ? new Date(event.eventDate).toLocaleString("en-US", {
         weekday: "long",
@@ -174,52 +159,23 @@ const EventDetails = () => {
       {/* Image Gallery */}
       <div className="bg-base-200 rounded-3xl overflow-hidden shadow-lg">
         <div className="relative h-[400px] md:h-[500px]">
-          {eventImages.length > 0 ? (
-            <>
-              <img
-                src={eventImages[currentImageIndex]}
-                alt={event.title}
-                className="w-full h-full object-cover"
-              />
-              {eventImages.length > 1 && (
-                <>
-                  <button
-                    onClick={() =>
-                      setCurrentImageIndex(
-                        (prev) => (prev - 1 + eventImages.length) % eventImages.length
-                      )
-                    }
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 btn btn-circle btn-primary"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    onClick={() =>
-                      setCurrentImageIndex((prev) => (prev + 1) % eventImages.length)
-                    }
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 btn btn-circle btn-primary"
-                  >
-                    ›
-                  </button>
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                    {eventImages.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentImageIndex(idx)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          idx === currentImageIndex
-                            ? "bg-primary w-6"
-                            : "bg-base-100/50 hover:bg-base-100/75"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </>
+          {event.thumbnail ? (
+            <img
+              src={event.thumbnail}
+              alt={event.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop";
+              }}
+            />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-base text-base-content/70">
-              No image available
+            <div className="w-full h-full flex items-center justify-center text-base text-base-content/70 bg-gradient-to-br from-base-300 to-base-200">
+              <div className="text-center space-y-2">
+                <p className="text-lg font-semibold">No image available</p>
+                <p className="text-sm text-base-content/60">Image will be displayed here when available</p>
+              </div>
             </div>
           )}
         </div>
@@ -410,9 +366,14 @@ const EventDetails = () => {
                       src={relatedEvent.thumbnail}
                       alt={relatedEvent.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop";
+                      }}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs text-base-content/60">
+                    <div className="w-full h-full flex items-center justify-center text-xs text-base-content/60 bg-gradient-to-br from-base-300 to-base-200">
                       No image
                     </div>
                   )}
