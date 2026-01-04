@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import toast from "react-hot-toast";
+import { FaTrash, FaEdit, FaEye, FaCalendarAlt, FaSpinner, FaCheckCircle } from "react-icons/fa";
+import Spinner from "../components/Spinner";
 
 const ManageEvents = () => {
   const { user } = useContext(AuthContext);
@@ -107,12 +109,47 @@ const ManageEvents = () => {
         throw new Error(data.message || "Failed to update event.");
       }
 
-      toast.success("Event updated successfully.");
+      toast.success("Event updated successfully! ✨");
       cancelEdit();
       loadEvents();
     } catch (err) {
       console.error(err);
       toast.error(err.message || "Failed to update event.");
+    }
+  };
+
+  const handleDelete = async (id, title) => {
+    if (!user?.email) {
+      toast.error("You must be logged in.");
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestorEmail: user.email,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.message || "Failed to delete event.");
+      }
+
+      toast.success("Event deleted successfully! 🗑️");
+      loadEvents();
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Failed to delete event.");
     }
   };
 
@@ -128,8 +165,16 @@ const ManageEvents = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
+      <div className="space-y-6">
+        <div className="h-8 bg-base-200 rounded animate-pulse" />
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="bg-base-200 rounded-3xl p-6 animate-pulse">
+              <div className="h-6 bg-base-300 rounded w-3/4 mb-4" />
+              <div className="h-4 bg-base-300 rounded w-1/2" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -137,11 +182,16 @@ const ManageEvents = () => {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold mb-1">
-          Manage My Events
-        </h1>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+            <FaCalendarAlt className="text-base-100 text-lg" />
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold">
+            Manage My Events
+          </h1>
+        </div>
         <p className="text-sm md:text-base text-base-content/70">
-          View and update events you have created.
+          View, update, and delete events you have created.
         </p>
       </div>
 
@@ -289,7 +339,7 @@ const ManageEvents = () => {
                 ) : (
                   <>
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                      <div className="space-y-1">
+                      <div className="space-y-1 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="badge badge-outline">
                             {event.eventType}
@@ -307,12 +357,31 @@ const ManageEvents = () => {
                           {event.location}
                         </p>
                       </div>
-                      <button
-                        className="btn btn-outline btn-sm md:btn-md"
-                        onClick={() => startEdit(event)}
-                      >
-                        Edit Event
-                      </button>
+                      <div className="flex gap-2">
+                        <a
+                          href={`/event/${event._id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-ghost btn-sm"
+                          title="View Event"
+                        >
+                          <FaEye />
+                        </a>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => startEdit(event)}
+                          title="Edit Event"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="btn btn-error btn-sm"
+                          onClick={() => handleDelete(event._id, event.title)}
+                          title="Delete Event"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
                     </div>
                     <p className="text-xs md:text-sm text-base-content/70 line-clamp-3">
                       {event.description}
