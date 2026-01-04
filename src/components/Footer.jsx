@@ -1,4 +1,5 @@
-import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { FaFacebookF, FaGithub, FaLinkedinIn, FaEnvelope, FaPhone } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
@@ -23,56 +24,80 @@ const Footer = () => {
 
           {/* CENTER — Useful Links */}
           <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-            <a href="/about" className="hover:text-primary cursor-pointer">
+            <Link to="/about" className="hover:text-primary transition-colors">
               About
-            </a>
-            <a href="/privacy" className="hover:text-primary cursor-pointer">
-              Privacy Policy
-            </a>
-            <a href="/terms" className="hover:text-primary cursor-pointer">
-              Terms & Conditions
-            </a>
-            <a href="/contact" className="hover:text-primary cursor-pointer">
+            </Link>
+            <Link to="/upcoming-events" className="hover:text-primary transition-colors">
+              Explore Events
+            </Link>
+            <Link to="/contact" className="hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
+            <Link to="/privacy" className="hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-primary transition-colors">
+              Terms & Conditions
+            </Link>
           </div>
 
-          <div className="flex items-center gap-3 md:gap-4">
-            <a
-              href="https://x.com/_sir4n4?s=21"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-ghost btn-circle btn-sm hover:bg-base-300"
-            >
-              <FaXTwitter className="text-lg" />
-            </a>
+        </div>
 
-            <a
-              href="https://www.facebook.com/sir4n4/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-ghost btn-circle btn-sm hover:bg-base-300"
-            >
-              <FaFacebookF className="text-lg" />
-            </a>
-
-            <a
-              href="https://github.com/radiumSodium"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-ghost btn-circle btn-sm hover:bg-base-300"
-            >
-              <FaGithub className="text-lg" />
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/radiumsodium/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-ghost btn-circle btn-sm hover:bg-base-300"
-            >
-              <FaLinkedinIn className="text-lg" />
-            </a>
+        {/* Contact Info */}
+        <div className="mt-8 pt-8 border-t border-base-300 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 className="font-semibold mb-3">Contact Information</h3>
+            <div className="space-y-2 text-sm text-base-content/70">
+              <div className="flex items-center gap-2">
+                <FaEnvelope className="text-primary" />
+                <span>support@socialevents.com</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FaPhone className="text-primary" />
+                <span>+1 (555) 123-4567</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 className="font-semibold mb-3">Follow Us</h3>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://x.com/_sir4n4?s=21"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost btn-circle btn-sm hover:bg-primary hover:text-primary-content"
+                aria-label="Twitter"
+              >
+                <FaXTwitter className="text-lg" />
+              </a>
+              <a
+                href="https://www.facebook.com/sir4n4/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost btn-circle btn-sm hover:bg-primary hover:text-primary-content"
+                aria-label="Facebook"
+              >
+                <FaFacebookF className="text-lg" />
+              </a>
+              <a
+                href="https://github.com/radiumSodium"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost btn-circle btn-sm hover:bg-primary hover:text-primary-content"
+                aria-label="GitHub"
+              >
+                <FaGithub className="text-lg" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/radiumsodium/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost btn-circle btn-sm hover:bg-primary hover:text-primary-content"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn className="text-lg" />
+              </a>
+            </div>
           </div>
         </div>
 

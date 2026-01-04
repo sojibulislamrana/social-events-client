@@ -3,6 +3,7 @@ import AuthProvider from "./providers/AuthProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 
 import MainLayout from "./layouts/MainLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -13,6 +14,10 @@ import CreateEvent from "./pages/CreateEvent";
 import ManageEvents from "./pages/ManageEvents";
 import JoinedEvents from "./pages/JoinedEvents";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import AdminEvents from "./pages/AdminEvents";
+import AdminUsers from "./pages/AdminUsers";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "react-hot-toast";
@@ -68,6 +73,23 @@ const App = () => {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="*" element={<NotFound />} />
+            </Route>
+
+            {/* Dashboard Routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <DashboardLayout />
+                </PrivateRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="my-events" element={<ManageEvents />} />
+              <Route path="joined-events" element={<JoinedEvents />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="admin/events" element={<AdminEvents />} />
+              <Route path="admin/users" element={<AdminUsers />} />
             </Route>
           </Routes>
         </BrowserRouter>

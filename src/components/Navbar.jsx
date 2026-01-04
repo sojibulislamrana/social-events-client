@@ -14,8 +14,8 @@ const Navbar = () => {
   const navLinkClass = ({ isActive }) =>
     `px-3 py-2 rounded-full text-sm font-medium transition duration-200 ${
       isActive
-        ? "bg-primary text-primary-content shadow-sm"
-        : "text-base-content/80 hover:bg-base-200"
+        ? "bg-base-100 text-primary shadow-sm font-semibold"
+        : "text-base-100/90 hover:bg-base-100/20 hover:text-base-100"
     }`;
 
   const navItems = (
@@ -27,20 +27,30 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to="/upcoming-events" className={navLinkClass}>
-          Upcoming Events
+          Explore Events
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/about" className={navLinkClass}>
+          About
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact" className={navLinkClass}>
+          Contact
         </NavLink>
       </li>
     </>
   );
 
   return (
-    <header className="sticky top-0 z-30 bg-base-100/80 backdrop-blur-md border-b">
-      <nav className="navbar max-w-6xl mx-auto px-3 md:px-4">
+    <header className="sticky top-0 z-30 bg-gradient-to-r from-primary/90 via-primary to-secondary/90 backdrop-blur-md border-b border-primary/20 shadow-lg">
+      <nav className="navbar max-w-7xl mx-auto px-3 md:px-4">
         {/* LEFT — Brand + mobile menu */}
         <div className="navbar-start gap-2">
           {/* Mobile menu */}
           <div className="dropdown lg:hidden">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
+            <label tabIndex={0} className="btn btn-ghost btn-circle text-base-100 hover:bg-base-100/20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -66,6 +76,11 @@ const Navbar = () => {
                 <>
                   <div className="divider my-1" />
                   <li>
+                    <NavLink to="/dashboard" className={navLinkClass}>
+                      Dashboard
+                    </NavLink>
+                  </li>
+                  <li>
                     <NavLink to="/create-event" className={navLinkClass}>
                       Create Event
                     </NavLink>
@@ -90,16 +105,32 @@ const Navbar = () => {
             to="/"
             className="btn btn-ghost px-2 normal-case flex items-center gap-2"
           >
-            <div className="w-9 h-9 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <span className="text-lg font-black text-primary">SE</span>
+            <div className="w-9 h-9 rounded-2xl bg-base-100/20 flex items-center justify-center">
+              <span className="text-lg font-black text-base-100">SE</span>
             </div>
-            <span className="text-lg font-bold">SocialEvents</span>
+            <span className="text-lg font-bold text-base-100">SocialEvents</span>
           </Link>
         </div>
 
-        {/* CENTER — Desktop Nav */}
+          {/* CENTER — Desktop Nav */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal gap-1">{navItems}</ul>
+          <ul className="menu menu-horizontal gap-1">
+            {navItems}
+            {user && (
+              <>
+                <li>
+                  <NavLink to="/dashboard" className={navLinkClass}>
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/create-event" className={navLinkClass}>
+                    Create Event
+                  </NavLink>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
 
         {/* RIGHT — Theme toggle + Auth */}
@@ -114,7 +145,7 @@ const Navbar = () => {
 
             {/* Sun icon */}
             <svg
-              className="swap-on w-6 h-6 text-yellow-400 drop-shadow-glow"
+              className="swap-on w-6 h-6 text-base-100 drop-shadow-lg"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 24 24"
@@ -124,7 +155,7 @@ const Navbar = () => {
 
             {/* Moon icon */}
             <svg
-              className="swap-off w-6 h-6 text-blue-400 drop-shadow-glow"
+              className="swap-off w-6 h-6 text-base-100 drop-shadow-lg"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 24 24"
@@ -136,7 +167,7 @@ const Navbar = () => {
           {/* Auth Section */}
           {user ? (
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar text-base-100 hover:bg-base-100/20">
                 <div className="w-9 h-9 rounded-full ring ring-primary/40 ring-offset-2">
                   {user.photoURL ? (
                     <img src={user.photoURL} alt="avatar" />
@@ -164,6 +195,9 @@ const Navbar = () => {
                 <div className="divider my-1" />
 
                 <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
                   <Link to="/create-event">Create Event</Link>
                 </li>
                 <li>
@@ -187,10 +221,10 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link to="/login" className="btn btn-sm btn-ghost">
+              <Link to="/login" className="btn btn-sm bg-base-100/20 text-base-100 border-base-100/30 hover:bg-base-100 hover:text-primary">
                 Login
               </Link>
-              <Link to="/register" className="btn btn-sm btn-primary">
+              <Link to="/register" className="btn btn-sm bg-base-100 text-primary hover:bg-base-200">
                 Register
               </Link>
             </>
